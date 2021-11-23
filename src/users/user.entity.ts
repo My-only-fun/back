@@ -47,6 +47,10 @@ export class User extends BaseEntity {
   @Column()
   hashtags: string;
 
+  @ApiProperty()
+  @Column()
+  avatar_url: string;
+
   @Column()
   @Exclude()
   password: string;

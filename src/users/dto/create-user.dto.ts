@@ -13,6 +13,26 @@ export class CreateUserDTO {
   @ApiProperty()
   username: string;
 
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  description: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  site: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  hashtags: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  avatar_url: string;
+
   @IsEmail()
   @IsNotEmpty()
   @ApiProperty()
