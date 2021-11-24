@@ -6,19 +6,12 @@ import {
   NotFoundException,
   Param,
   Post,
-  UseGuards,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOkResponse,
-  ApiOperation,
-  ApiParam,
-} from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { CreateUserDTO } from './dto/create-user.dto';
-import { FindUserDTO } from './dto/find-user.dto';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
+import {FindUserByIdDTO} from "./dto/find-user-id.dto";
 
 @Controller('users')
 export class UsersController {
@@ -40,19 +33,23 @@ export class UsersController {
     return this.usersService.create(user);
   }
 
-  @ApiOperation({ summary: 'Get a user' })
-  @ApiParam({ name: 'username', type: FindUserDTO })
-  @ApiOkResponse({ type: User, description: 'User object' })
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get(':username')
-  async findOne(@Param() userReq: { username: string }): Promise<User> {
-    const user: User | undefined = await this.usersService.findOne(userReq);
+  // Get all users
+  @Get()
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiOkResponse({ type: [User] })
+  async getAllUsers(): Promise<User[]> {
+    return this.usersService.findAll();
+  }
 
+  // Get user by id
+  @ApiOperation({ summary: 'Get user by id' })
+  @ApiOkResponse({ type: User, description: 'Request benchmark' })
+  @Get(':id')
+  async getUserById(@Param() userFindById: FindUserByIdDTO): Promise<User> {
+    const user = await this.usersService.findById(userFindById.id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-
     return user;
   }
 }

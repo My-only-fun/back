@@ -27,7 +27,6 @@ export class AppController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   login(@Body() authUserDTO: AuthUserDTO): { access_token: string } {
-    return { access_token: ""};
     return this.authService.login(new User(authUserDTO));
   }
 }

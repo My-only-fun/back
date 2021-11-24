@@ -1,9 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { FindUserDTO } from './dto/find-user.dto';
 import { User } from './user.entity';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class UsersService {
@@ -31,10 +36,28 @@ export class UsersService {
   async create(userData: CreateUserDTO): Promise<User> {
     const user = new User(userData);
     return user.save();
-    // return this.usersRepository.save(userData);
   }
 
   async findOne(user: FindUserDTO): Promise<User | undefined> {
     return this.usersRepository.findOne({ username: user.username });
+  }
+
+  // Find by id
+  async findById(id: string): Promise<User | undefined> {
+    if (!isUUID(id)) {
+      throw new BadRequestException(`Invalid user id: ${id}`);
+    }
+
+    const user = this.usersRepository.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    return user;
+  }
+
+  // Find all users
+  async findAll(): Promise<User[]> {
+    return this.usersRepository.find();
   }
 }
