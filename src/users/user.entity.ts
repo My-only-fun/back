@@ -60,6 +60,10 @@ export class User extends BaseEntity {
   email: string;
 
   @ApiProperty()
+  @Column({ default: false })
+  is_influencer: boolean;
+
+  @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;
 

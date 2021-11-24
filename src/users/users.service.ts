@@ -58,6 +58,7 @@ export class UsersService {
 
   // Find all users
   async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+    return this.usersRepository.find({is_influencer: true});
   }
+
 }

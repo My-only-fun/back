@@ -5,13 +5,15 @@ import {
   Get,
   NotFoundException,
   Param,
-  Post,
+  Post, Request, UseGuards,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
 import {FindUserByIdDTO} from "./dto/find-user-id.dto";
+import {JwtAuthGuard} from "../auth/jwt-auth.guard";
+import {ValidatedJWTReq} from "../auth/dto/validated-jwt-req";
 
 @Controller('users')
 export class UsersController {
@@ -43,7 +45,7 @@ export class UsersController {
 
   // Get user by id
   @ApiOperation({ summary: 'Get user by id' })
-  @ApiOkResponse({ type: User, description: 'Request benchmark' })
+  @ApiOkResponse({ type: User, description: 'Requested user'})
   @Get(':id')
   async getUserById(@Param() userFindById: FindUserByIdDTO): Promise<User> {
     const user = await this.usersService.findById(userFindById.id);
@@ -51,5 +53,14 @@ export class UsersController {
       throw new NotFoundException('User not found');
     }
     return user;
+  }
+
+  // Get my profile
+  @ApiOperation({ summary: 'Get my profile' })
+  @ApiOkResponse({ type: User, description: 'Get my profile' })
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getMyProfile(@Request() req: ValidatedJWTReq): Promise<User> {
+    return req.user;
   }
 }
