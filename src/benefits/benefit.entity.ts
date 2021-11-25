@@ -1,7 +1,8 @@
-import { BaseEntity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../users/user.entity';
 
+@Entity('benefits')
 export class Benefit extends BaseEntity {
   constructor(partial: Partial<Benefit>) {
     super();
@@ -20,12 +21,10 @@ export class Benefit extends BaseEntity {
   description: string;
 
   @ApiProperty()
-  @Column()
+  @Column({type: 'float'})
   price: number;
 
-  @ManyToOne(() => User, (user) => user.benefits, {
-    eager: true,
-  })
+  @ManyToOne((type) => User, (user) => user.benefits, { eager: false })
   @ApiProperty({ type: () => User })
-  user: User;
+  owner: User;
 }
