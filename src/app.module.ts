@@ -7,6 +7,8 @@ import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { HealthController } from './health/health.controller';
 import ormconfig from './ormconfig';
+import { UsersModule } from './users/users.module';
+import { BenefitsModule } from './benefits/benefits.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import ormconfig from './ormconfig';
     TypeOrmModule.forRoot({ ...ormconfig, keepConnectionAlive: true }),
     AuthModule,
     TerminusModule,
+    UsersModule,
+    BenefitsModule,
     LoggerModule.forRoot({
       pinoHttp: {
         level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
