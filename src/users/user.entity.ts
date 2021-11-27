@@ -6,7 +6,8 @@ import {
   BeforeUpdate,
   Column,
   CreateDateColumn,
-  Entity, OneToMany,
+  Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
@@ -14,7 +15,7 @@ import {
 } from 'typeorm';
 
 import argon2 = require('argon2');
-import {Benefit} from "../benefits/benefit.entity";
+import { Benefit } from '../benefits/benefit.entity';
 
 @Entity('users')
 @Unique(['username', 'email'])
