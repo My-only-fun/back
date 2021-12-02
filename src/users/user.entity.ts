@@ -77,7 +77,7 @@ export class User extends BaseEntity {
   @VersionColumn()
   dataVersion: number;
 
-  @OneToMany((type) => Benefit, (benefit) => benefit.owner)
+  @OneToMany((type) => Benefit, (benefit) => benefit.owner, { eager: true })
   benefits: Benefit[];
 
   @BeforeInsert()

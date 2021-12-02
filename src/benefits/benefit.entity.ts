@@ -24,6 +24,10 @@ export class Benefit extends BaseEntity {
   @Column({type: 'float'})
   price: number;
 
+  @ApiProperty()
+  @Column({default: false})
+  highlight: boolean;
+
   @ManyToOne((type) => User, (user) => user.benefits, { eager: false })
   @ApiProperty({ type: () => User })
   owner: User;
