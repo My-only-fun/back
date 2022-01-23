@@ -70,7 +70,7 @@ export class UsersController {
           userByIdDTO: FindUserByIdDTO,
   ): Promise<User> {
     if (!userByIdDTO) {
-      throw new NotFoundException('No body found');
+      throw new NotFoundException('User not found');
     }
     const user = await this.usersService.findById(userByIdDTO.id);
     if (!user) {
