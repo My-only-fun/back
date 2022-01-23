@@ -63,4 +63,20 @@ export class UsersController {
   async getMyProfile(@Request() req: ValidatedJWTReq): Promise<User> {
     return req.user;
   }
+
+  @Post('becomeInfluencer')
+  async becomeInfluencer(
+      @Body()
+          userByIdDTO: FindUserByIdDTO,
+  ): Promise<User> {
+    if (!userByIdDTO) {
+      throw new NotFoundException('No body found');
+    }
+    const user = await this.usersService.findById(userByIdDTO.id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return this.usersService.userBecomeInfluencer(user);
+  }
+
 }
